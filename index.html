@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartStudy Planner 🐶</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Itim&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
+
+:root {
+  --purple: #9275ed;
+  --purple-dark: #6845bd;
+  --pink: #ff9fce;
+  --blue: #a9d7ff;
+  --green: #92dfc2;
+  --bg: #f8f5ff;
+  --text: #493477;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Sans Thai", sans-serif;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.header {
+  background: linear-gradient(120deg, #e8dcff, #ffe5f2, #e0efff);
+  padding: 24px;
+  border-bottom: 3px solid #e4d7ff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-dog {
+  font-size: 65px;
+  background: white;
+  border-radius: 25px;
+  padding: 8px;
+  box-shadow: 0 5px 15px #c7b4ec;
+}
+
+h1 {
+  font-family: "Itim", cursive;
+  font-size: clamp(27px, 4vw, 43px);
+  margin: 0;
+  color: var(--purple-dark);
+}
+
+.subtitle {
+  margin: 7px 0 0;
+  font-size: 14px;
+}
+
+.header-note {
+  background: white;
+  border: 2px dashed #d5b9ff;
+  border-radius: 25px;
+  padding: 14px 20px;
+  text-align: center;
+  font-family: "Itim", cursive;
+  font-size: 20px;
+  transform: rotate(2deg);
+}
+
+.container {
+  max-width: 1450px;
+  margin: auto;
+  padding: 22px;
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  background: linear-gradient(110deg, #bba4ff, #e6c8ff, #ffcde6);
+  color: #4b2d8e;
+  padding: 20px 25px;
+  border-radius: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 0 #e2d5ff;
+}
+
+.welcome h2 {
+  margin: 0 0 7px;
+  font-size: 23px;
+}
+
+.welcome p {
+  margin: 0;
+}
+
+.welcome-dog {
+  font-size: 75px;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+  gap: 20px;
+}
+
+.panel {
+  background: var(--white);
+  border: 2px solid #e8ddff;
+  border-radius: 23px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 0 #eee6ff;
+}
+
+.panel h2 {
+  font-size: 21px;
+  margin: 0 0 17px;
+  color: var(--purple-dark);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  padding: 16px 8px;
+  border-radius: 17px;
+  text-align: center;
+  background: #f3edff;
+  border: 1px solid #e1d3ff;
+}
+
+.stat:nth-child(2) {
+  background: #e9fff5;
+  border-color: #c4efdd;
+}
+
+.stat:nth-child(3) {
+  background: #fff0f7;
+  border-color: #ffd3e7;
+}
+
+.stat-icon {
+  font-size: 28px;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 13px;
+}
+
+.progress-track {
+  height: 14px;
+  background: #eee7ff;
+  border-radius: 20px;
+  margin: 18px 0 9px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #9b7aff, #f69bce);
+  border-radius: 20px;
+  transition: width 0.4s;
+}
+
+.progress-text {
+  font-size: 13px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 0.8fr;
+  gap: 12px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+input, select {
+  width: 100%;
+  padding: 11px;
+  border: 2px solid #e2d7ff;
+  border-radius: 12px;
+  background: #fdfbff;
+  color: var(--text);
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--purple);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.btn {
+  padding: 11px 18px;
+  border-radius: 13px;
+  font-weight: 700;
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, #9676f2, #b29aff);
+  color: white;
+}
+
+.btn-pink {
+  background: linear-gradient(120deg, #ff9fcf, #f7b6e2);
+  color: #713d85;
+}
+
+.btn-green {
+  background: #d8fae9;
+  color: #257858;
+}
+
+.btn-light {
+  background: #f0e9ff;
+  color: var(--purple-dark);
+}
+
+.btn-delete {
+  background: #fff0f3;
+  color: #d54f77;
+  padding: 7px 10px;
+  border-radius: 10px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 600px;
+}
+
+th {
+  background: #f0e8ff;
+  color: #6745a9;
+  padding: 12px 9px;
+  text-align: left;
+  font-size: 13px;
+}
+
+td {
+  padding: 12px 9px;
+  border-bottom: 1px solid #eee8fb;
+  font-size: 13px;
+}
+
+tr:hover td {
+  background: #fcfaff;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.high {
+  background: #ffe1ec;
+  color: #b74277;
+}
+
+.medium {
+  background: #e9e0ff;
+  color: #6846b3;
+}
+
+.low {
+  background: #dff5ff;
+  color: #367caa;
+}
+
+.status-done {
+  background: #d9f9e9;
+  color: #26845b;
+}
+
+.status-wait {
+  background: #fff0d9;
+  color: #b87920;
+}
+
+.subject-list {
+  display: grid;
+  gap: 12px;
+}
+
+.subject-card {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid #e6dcff;
+  border-radius: 16px;
+  background: linear-gradient(110deg, #fcfaff, #fff6fb);
+}
+
+.subject-emoji {
+  font-size: 26px;
+  background: #f0e7ff;
+  border-radius: 12px;
+  padding: 7px;
+}
+
+.subject-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.subject-info strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.subject-info small {
+  color: #8979aa;
+}
+
+.timer {
+  text-align: center;
+}
+
+.timer-circle {
+  width: 190px;
+  height: 190px;
+  max-width: 100%;
+  margin: 20px auto;
+  border: 11px solid #cdbbff;
+  outline: 5px solid #f0eaff;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fff, #f5edff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.timer-time {
+  font-size: 39px;
+  font-weight: 700;
+  color: var(--purple-dark);
+}
+
+.timer-label {
+  font-size: 13px;
+}
+
+.timer-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.timer-buttons button {
+  flex: 1;
+  min-width: 80px;
+}
+
+.today-card {
+  background: linear-gradient(120deg, #fff2fa, #f4edff);
+  padding: 17px;
+  border-radius: 17px;
+  text-align: center;
+}
+
+.today-date {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--purple-dark);
+}
+
+.quote {
+  font-family: "Itim", cursive;
+  font-size: 20px;
+  margin: 14px 0 0;
+}
+
+.dog-tip {
+  background: #fff6dc;
+  border-radius: 15px;
+  padding: 13px;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.empty {
+  padding: 20px;
+  text-align: center;
+  color: #9888b8;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  color: #927db8;
+  font-size: 13px;
+}
+
+@media (max-width: 850px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .header-note {
+    display: none;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 500px) {
+  .header {
+    padding: 15px;
+  }
+
+  .logo-dog {
+    font-size: 43px;
+  }
+
+  .container {
+    padding: 12px;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  .welcome {
+    padding: 17px;
+  }
+
+  .welcome-dog {
+    font-size: 50px;
+  }
+
+  .stats {
+    gap: 6px;
+  }
+
+  .stat-number {
+    font-size: 23px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="brand">
+    <div class="logo-dog">🐶</div>
+    <div>
+      <h1>SmartStudy Planner 🐾</h1>
+      <p class="subtitle">วางแผนอย่างฉลาด อ่านหนังสืออย่างมีเป้าหมาย 💗</p>
+      <p class="subtitle">ผู้ช่วยอ่านหนังสือสำหรับนักเรียน ม.6 และ TCAS</p>
+    </div>
+  </div>
+
+  <div class="header-note">
+    🦴 สู้ ๆ นะ!<br>ทำได้แน่นอน 💕
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="welcome">
+    <div>
+      <h2>ฮัลโหล นักอ่านคนเก่ง! 🌷</h2>
+      <p>วันนี้มาอ่านหนังสือด้วยกันนะ น้องหมาเป็นกำลังใจให้ 🐾</p>
+    </div>
+    <div class="welcome-dog">🐕📚</div>
+  </section>
+
+  <div class="dashboard">
+
+    <div class="left-column">
+
+      <section class="panel">
+        <h2>📊 ภาพรวมการเรียน</h2>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-icon">📚</div>
+            <div class="stat-number" id="totalCount">0</div>
+            <div class="stat-label">วิชาทั้งหมด</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">✅</div>
+            <div class="stat-number" id="doneCount">0</div>
+            <div class="stat-label">อ่านเสร็จแล้ว</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-number" id="percentCount">0%</div>
+            <div class="stat-label">ความสำเร็จ</div>
+          </div>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="progress-text" id="progressText">
+          เริ่มต้นอ่านหนังสือกันเลย 💜
+        </div>
+      </section>
+
+      <section class="panel" id="addSubject">
+        <h2>➕ เพิ่มวิชาที่ต้องอ่าน</h2>
+
+        <form id="subjectForm">
+          <div class="form-grid">
+
+            <div>
+              <label for="subjectName">ชื่อวิชา</label>
+              <input id="subjectName" type="text"
+                     placeholder="เช่น คณิตศาสตร์" required>
+            </div>
+
+            <div>
+              <label for="examDate">วันสอบ</label>
+              <input id="examDate" type="date" required>
+            </div>
+
+            <div>
+              <label for="priority">ความสำคัญ</label>
+              <select id="priority">
+                <option value="สูง">สูง</option>
+                <option value="ปานกลาง" selected>ปานกลาง</option>
+                <option value="ต่ำ">ต่ำ</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="hours">เวลาอ่าน (ชม.)</label>
+              <input id="hours" type="number" min="1" max="3"
+                     value="1" required>
+            </div>
+
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">
+              ＋ เพิ่มวิชา
+            </button>
+
+            <button class="btn btn-pink" type="button"
+                    id="scheduleBtn">
+              🐶 จัดตารางอัตโนมัติ
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>🗓️ ตารางอ่านหนังสือของฉัน</h2>
+        <p style="font-size:13px;color:#8c7aad">
+          ⏰ เวลาอ่านที่แนะนำ: 18:00–21:00 น.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>วันที่</th>
+                <th>เวลา</th>
+                <th>วิชา</th>
+                <th>เวลาอ่าน</th>
+                <th>ความสำคัญ</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleBody"></tbody>
+          </table>
+        </div>
+
+        <div id="scheduleMessage" class="dog-tip">
+          🐾 เพิ่มวิชาแล้วกดจัดตารางอัตโนมัติได้เลย!
+        </div>
+      </section>
+
+    </div>
+
+    <div class="right-column">
+
+      <section class="panel">
+        <h2>📅 วันนี้ของเรา</h2>
+        <div class="today-card">
+          <div class="today-date" id="todayDate"></div>
+          <div class="quote">
+            “ตั้งใจในวันนี้<br>เพื่ออนาคตที่ดีกว่า” 💗
+          </div>
+          <div style="font-size:46px;margin-top:8px">🐶🌸</div>
+        </div>
+      </section>
+
+      <section class="panel timer">
+        <h2>⏱️ Focus Timer</h2>
+        <p style="font-size:13px">อ่านหนังสือ 25 นาที พัก 5 นาที</p>
+
+        <div class="timer-circle">
+          <div class="timer-time" id="timerDisplay">25:00</div>
+          <div class="timer-label" id="timerLabel">เวลาอ่านหนังสือ 📚</div>
+        </div>
+
+        <div class="timer-buttons">
+          <button class="btn btn-primary" id="startTimer">▶ เริ่ม</button>
+          <button class="btn btn-pink" id="pauseTimer">⏸ หยุด</button>
+          <button class="btn btn-light" id="resetTimer">↻ เริ่มใหม่</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>📋 รายวิชาที่เพิ่มไว้</h2>
+        <div id="subjectList" class="subject-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>🐾 กำลังใจจากน้องหมา</h2>
+        <div class="dog-tip">
+          🐶 อย่าลืมพักสายตา ดื่มน้ำ และให้รางวัลตัวเองหลังอ่านเสร็จนะ!
+          <br><br>
+          <span style="font-size:40px">🦴 🐕 🦴</span>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  🐾 SmartStudy Planner · Student Computer Engineering Project · 2026 💜
+</footer>
+
+<script>
+const STORAGE_KEY = "smartStudyPlannerDogV1";
+
+let subjects = [];
+let nextId = 1;
+
+try {
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (saved) {
+    const data = JSON.parse(saved);
+    subjects = Array.isArray(data.subjects) ? data.subjects : [];
+    nextId = Number(data.nextId) || 1;
+  }
+} catch (error) {
+  subjects = [];
+}
+
+const $ = id => document.getElementById(id);
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    subjects,
+    nextId
+  }));
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "-";
+
+  const parts = dateString.split("-").map(Number);
+  const date = new Date(parts[0], parts[1] - 1, parts[2]);
+
+  return date.toLocaleDateString("th-TH", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function priorityClass(priority) {
+  if (priority === "สูง") return "high";
+  if (priority === "ต่ำ") return "low";
+  return "medium";
+}
+
+function render() {
+  const total = subjects.length;
+  const done = subjects.filter(subject => subject.done).length;
+  const percent = total ? Math.round(done / total * 100) : 0;
+
+  $("totalCount").textContent = total;
+  $("doneCount").textContent = done;
+  $("percentCount").textContent = percent + "%";
+  $("progressBar").style.width = percent + "%";
+
+  $("progressText").textContent = total
+    ? `อ่านเสร็จแล้ว ${done} จาก ${total} วิชา 💗`
+    : "เริ่มต้นอ่านหนังสือกันเลย 💜";
+
+  const list = $("subjectList");
+
+  if (!total) {
+    list.innerHTML = `
+      <div class="empty">
+        🐶 ยังไม่มีวิชาเลย<br>
+        มาเพิ่มวิชาแรกกันนะ!
+      </div>`;
+  } else {
+    list.innerHTML = subjects.map(subject => `
+      <div class="subject-card">
+        <div class="subject-emoji">
+          ${subject.done ? "🎉" : "📚"}
+        </div>
+
+        <div class="subject-info">
+          <strong>${escapeHTML(subject.name)}</strong>
+          <small>
+            📅 ${formatDate(subject.examDate)}
+            · ${subject.hours} ชั่วโมง
+          </small>
+          <br>
+          <span class="badge ${priorityClass(subject.priority)}">
+            ${escapeHTML(subject.priority)}
+          </span>
+          <span class="badge ${subject.done ? "status-done" : "status-wait"}">
+            ${subject.done ? "อ่านเสร็จแล้ว" : "รออ่าน"}
+          </span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <button class="btn ${subject.done ? "btn-light" : "btn-green"}"
+            onclick="toggleDone(${subject.id})"
+            aria-label="เปลี่ยนสถานะการอ่าน">
+            ${subject.done ? "↩️" : "✓"}
+          </button>
+
+          <button class="btn-delete"
+            onclick="deleteSubject(${subject.id})"
+            aria-label="ลบวิชา">
+            🗑️
+          </button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  renderSchedule();
+}
+
+function renderSchedule() {
+  const body = $("scheduleBody");
+  const scheduled = subjects.filter(subject =>
+    subject.slots && subject.slots.length
+  );
+
+  if (!scheduled.length) {
+    body.innerHTML = `
+      <tr>
+        <td colspan="5" class="empty">
+          🐾 ยังไม่มีตาราง กด “จัดตารางอัตโนมัติ” ได้เลย
+        </td>
+      </tr>`;
+    return;
+  }
+
+  const rows = [];
+
+  scheduled.forEach(subject => {
+    subject.slots.forEach(slot => {
+      rows.push({
+        subject,
+        date: slot.date,
+        start: slot.start,
+        end: slot.end
+      });
+    });
+  });
+
+  rows.sort((a, b) =>
+    (a.date + a.start).localeCompare(b.date + b.start)
+  );
+
+  body.innerHTML = rows.map(row => `
+    <tr>
+      <td>${formatDate(row.date)}</td>
+      <td>${row.start}–${row.end}</td>
+      <td>${escapeHTML(row.subject.name)}</td>
+      <td>${row.subject.hours} ชม.</td>
+      <td>
+        <span class="badge ${priorityClass(row.subject.priority)}">
+          ${escapeHTML(row.subject.priority)}
+        </span>
+      </td>
+    </tr>
+  `).join("");
+}
+
+$("subjectForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const name = $("subjectName").value.trim();
+  const examDate = $("examDate").value;
+  const priority = $("priority").value;
+  const hours = Number($("hours").value);
+
+  if (!name || !examDate || !hours || hours < 1 || hours > 3) {
+    alert("กรุณากรอกข้อมูลให้ครบ และกำหนดเวลาอ่าน 1–3 ชั่วโมง");
+    return;
+  }
+
+  if (examDate < localDateString(new Date())) {
+    alert("วันสอบต้องไม่เป็นวันที่ผ่านมาแล้วนะคะ 🐶");
+    return;
+  }
+
+  subjects.push({
+    id: nextId++,
+    name,
+    examDate,
+    priority,
+    hours,
+    done: false,
+    slots: []
+  });
+
+  saveData();
+  render();
+
+  $("subjectForm").reset();
+  $("hours").value = 1;
+
+  $("scheduleMessage").textContent =
+    "เพิ่มวิชาแล้วค่ะ 💗 กดจัดตารางอัตโนมัติเพื่อสร้างตารางอ่านหนังสือ";
+
+  $("subjectName").focus();
+});
+
+function localDateString(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function toggleDone(id) {
+  const subject = subjects.find(item => item.id === id);
+  if (!subject) return;
+
+  subject.done = !subject.done;
+  saveData();
+  render();
+}
+
+function deleteSubject(id) {
+  const subject = subjects.find(item => item.id === id);
+  if (!subject) return;
+
+  if (!confirm(`ต้องการลบวิชา "${subject.name}" ใช่ไหมคะ?`)) {
+    return;
+  }
+
+  subjects = subjects.filter(item => item.id !== id);
+  saveData();
+  render();
+}
+
+$("scheduleBtn").addEventListener("click", () => {
+  if (!subjects.length) {
+    alert("เพิ่มวิชาก่อนนะคะ 🐶");
+    return;
+  }
+
+  const today = new Date();
+  const todayString = localDateString(today);
+
+  // เรียงวิชาตามวันสอบ ความสำคัญ และสถานะการอ่าน
+  const priorityRank = {
+    "สูง": 0,
+    "ปานกลาง": 1,
+    "ต่ำ": 2
+  };
+
+  const ordered = [...subjects].sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+
+    const examCompare = a.examDate.localeCompare(b.examDate);
+    if (examCompare !== 0) return examCompare;
+
+    return priorityRank[a.priority] - priorityRank[b.priority];
+  });
+
+  // วางตารางในช่วง 18:00–21:00
+  // หากเต็ม 3 ชั่วโมง ให้ย้ายไปวันถัดไป
+  let dayOffset = 0;
+  let currentHour = 18;
+
+  subjects.forEach(subject => {
+    subject.slots = [];
+  });
+
+  ordered.forEach(subject => {
+    if (subject.done) return;
+
+    if (currentHour + subject.hours > 21) {
+      dayOffset++;
+      currentHour = 18;
+    }
+
+    const studyDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + dayOffset
+    );
+
+    const dateString = localDateString(studyDate);
+
+    subject.slots.push({
+      date: dateString,
+      start: String(currentHour).padStart(2, "0") + ":00",
+      end: String(currentHour + subject.hours).padStart(2, "0") + ":00"
+    });
+
+    currentHour += subject.hours;
+
+    if (currentHour >= 21) {
+      dayOffset++;
+      currentHour = 18;
+    }
+  });
+
+  saveData();
+  render();
+
+  $("scheduleMessage").textContent =
+    "🐶 จัดตารางเรียบร้อยแล้ว! ระบบแบ่งเวลาอ่านช่วง 18:00–21:00 ให้ค่ะ";
+
+  alert("จัดตารางอ่านหนังสือเรียบร้อยแล้วค่ะ 💜");
+});
+
+// แสดงวันที่ปัจจุบัน
+function updateTodayDate() {
+  $("todayDate").textContent = new Date().toLocaleDateString("th-TH", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+}
+
+updateTodayDate();
+
+// Pomodoro timer: 25 นาทีอ่าน / 5 นาทีพัก
+let remainingSeconds = 25 * 60;
+let timerInterval = null;
+let isBreak = false;
+
+function displayTimer() {
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+
+  $("timerDisplay").textContent =
+    String(minutes).padStart(2, "0") + ":" +
+    String(seconds).padStart(2, "0");
+
+  $("timerLabel").textContent =
+    isBreak ? "เวลาพักผ่อน 🌸" : "เวลาอ่านหนังสือ 📚";
+}
+
+function stopTimer() {
+  if (timerInterval !== null) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+$("startTimer").addEventListener("click", () => {
+  if (timerInterval !== null) return;
+
+  timerInterval = setInterval(() => {
+    remainingSeconds--;
+    displayTimer();
+
+    if (remainingSeconds <= 0) {
+      stopTimer();
+
+      if (!isBreak) {
+        alert("เก่งมากค่ะ! อ่านครบ 25 นาทีแล้ว 🐶 ได้เวลาพัก 5 นาทีค่ะ");
+        isBreak = true;
+        remainingSeconds = 5 * 60;
+      } else {
+        alert("พักครบแล้วค่ะ! กลับมาอ่านหนังสือกันต่อ 💜");
+        isBreak = false;
+        remainingSeconds = 25 * 60;
+      }
+
+      displayTimer();
+    }
+  }, 1000);
+});
+
+$("pauseTimer").addEventListener("click", stopTimer);
+
+$("resetTimer").addEventListener("click", () => {
+  stopTimer();
+  isBreak = false;
+  remainingSeconds = 25 * 60;
+  displayTimer();
+});
+
+displayTimer();
+render();
+</script>
+
+</body>
+</html>
