@@ -506,7 +506,53 @@ footer {
 </style>
 </head>
 
-<body>
+<!-- ================= AI FEATURES MODAL ================= -->
+<div id="ai-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center; font-family:'Noto Sans Thai', sans-serif;">
+    <div style="background:#ffffff; width:90%; max-width:700px; padding:25px; border-radius:20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-height:85vh; overflow-y:auto; position:relative;">
+        
+        <!-- ปุ่มปิดหน้าต่าง -->
+        <span onclick="toggleAiModal()" style="position:absolute; top:15px; right:20px; font-size:24px; cursor:pointer; color:#888;">&times;</span>
+        
+        <h2 style="color:var(--purple); margin-top:0; display:flex; align-items:center; gap:10px;">
+            ✨ ผู้ช่วยอัจฉริยะ Smart AI 
+        </h2>
+        
+        <!-- แท็บสลับฟีเจอร์ -->
+        <div style="display:flex; gap:10px; margin-bottom:20px; border-bottom:2px solid #f0f0f0; padding-bottom:10px;">
+            <button onclick="switchAiTab('planner')" id="tab-planner" style="background:var(--purple); color:white; border:none; padding:10px 15px; border-radius:10px; cursor:pointer; font-weight:bold;">📅 จัดตารางเรียนอัจฉริยะ</button>
+            <button onclick="switchAiTab('summary')" id="tab-summary" style="background:#eee; color:#333; border:none; padding:10px 15px; border-radius:10px; cursor:pointer; font-weight:bold;">📝 สรุปเนื้อหา & Flashcards</button>
+        </div>
+
+        <!-- ส่วนที่ 1: AI ช่วยจัดตารางเรียน -->
+        <div id="ai-planner-section">
+            <p style="color:#666; font-size:14px;">พิมพ์บอกความต้องการของคุณ เช่น "มีสอบปลายภาควิชาฟิสิกส์ ม.6 เรื่องคลื่นและแสงในอีก 2 สัปดาห์ มีเวลาอ่านแค่วันเสาร์อาทิตย์ วันละ 3 ชั่วโมง ช่วยจัดตารางให้หน่อย"</p>
+            <textarea id="ai-planner-input" rows="4" style="width:100%; border:2px solid #e0e0e0; border-radius:12px; padding:12px; box-sizing:border-box; font-family:inherit; resize:none;" placeholder="พิมพ์เป้าหมายการสอบ หรือวิชาที่ต้องการให้ออกตารางทบทวนที่นี่..."></textarea>
+            <button onclick="generateStudyPlan()" style="background:var(--purple); color:white; border:none; width:100%; padding:12px; border-radius:12px; margin-top:12px; font-weight:bold; cursor:pointer; font-size:16px;">🪄 ให้ AI สร้างตารางเรียนให้</button>
+        </div>
+
+        <!-- ส่วนที่ 2: AI สรุปเนื้อหา & Flashcards -->
+        <div id="ai-summary-section" style="display:none;">
+            <p style="color:#666; font-size:14px;">วางเนื้อหาบทเรียนยาวๆ เพื่อให้ AI สรุปใจความสำคัญ พร้อมสร้างการ์ดคำถาม-คำตอบ (Flashcards) สำหรับใช้ทบทวนความจำ</p>
+            <textarea id="ai-summary-input" rows="5" style="width:100%; border:2px solid #e0e0e0; border-radius:12px; padding:12px; box-sizing:border-box; font-family:inherit; resize:none;" placeholder="วางเนื้อหาหรือชีทสรุปบทเรียนยาวๆ ที่นี่..."></textarea>
+            <button onclick="generateSummaryAndCards()" style="background:var(--pink); color:white; border:none; width:100%; padding:12px; border-radius:12px; margin-top:12px; font-weight:bold; cursor:pointer; font-size:16px;">⚡ สรุปเนื้อหาและสร้าง Flashcards</button>
+        </div>
+
+        <!-- พื้นที่แสดงผลลัพธ์จาก AI -->
+        <div id="ai-loading" style="display:none; text-align:center; margin-top:20px; color:var(--purple); font-weight:bold;">
+            ⏳ น้องหมา AI กำลังประมวลผลให้อย่างตั้งใจ กรุณารอสักครู่...
+        </div>
+        <div id="ai-result" style="margin-top:25px; padding:15px; background:#f9f9f9; border-left:5px solid var(--purple); border-radius:8px; display:none; white-space:pre-line; line-height:1.6; color:#333;">
+            <!-- โค้ดผลลัพธ์จะแสดงตรงนี้ -->
+        </div>
+
+    </div>
+</div>
+
+<!-- ปุ่มกดลอยลอย (Floating Button) เพื่อเปิดเมนู AI ไว้ที่มุมขวาล่าง -->
+<button onclick="toggleAiModal()" style="position:fixed; bottom:20px; right:20px; background:linear-gradient(135deg, var(--purple), var(--pink)); color:white; border:none; width:65px; height:65px; border-radius:50%; font-size:28px; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2); z-index:999; display:flex; justify-content:center; align-items:center;" title="เปิดผู้ช่วย AI">
+    🤖
+</button>
+
 
 <header class="header">
   <div class="brand">
@@ -1080,6 +1126,8 @@ $("resetTimer").addEventListener("click", () => {
 displayTimer();
 render();
 </script>
+    <!-- ปุ่มหุ่นยนต์ลอยย้ายหน้าข้ามไปหา Smart AI (เชื่อมต่อระบบ Multi-page) -->
+    <a href="ai-assistant.html" style="position:fixed; bottom:20px; right:20px; background:linear-gradient(135deg, #9275ed, #ff9fce); color:white; text-decoration:none; width:65px; height:65px; border-radius:50%; font-size:28px; box-shadow:0 5px 15px rgba(0,0,0,0.2); z-index:999; display:flex; justify-content:center; align-items:center;" title="เปิดผู้ช่วย AI">🤖</a>
 
 </body>
 </html>

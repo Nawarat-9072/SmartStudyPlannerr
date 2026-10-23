@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart AI ผู้ช่วยอัจฉริยะ - SmartStudyPlanner</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #9275ed;
+            --pink: #ff9fce;
+            --bg-color: #f7f5ff;
+        }
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 700px;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(146, 117, 237, 0.15);
+            text-align: center;
+        }
+        .nav-btn {
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--purple);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        textarea {
+            width: 100%;
+            border: 2px solid #e2def2;
+            border-radius: 16px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-family: inherit;
+            resize: none;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--purple);
+        }
+        .action-btn {
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 16px;
+            margin-top: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ปุ่มกดเพื่อย้อนกลับไปหน้าแรก -->
+        <a href="index.html" class="back-link">⬅️ กลับไปหน้าตารางเรียนหลัก</a>
+        
+        <h2 style="color: var(--purple); margin-top: 0; font-size: 26px;">✨ ผู้ช่วยอัจฉริยะ Smart AI Companion</h2>
+        <p style="color: #666; margin-bottom: 25px;">ยินดีต้อนรับสู่ห้องเรียนอัจฉริยะ! เลือกฟังก์ชันที่ต้องการให้น้องหมา AI ช่วยวางแผนได้เลยนะ โฮ่ง ๆ! 🐾</p>
+        
+        <!-- แถบสลับฟีเจอร์ -->
+        <div style="display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #f0edf7; padding-bottom: 15px; justify-content: center;">
+            <button onclick="document.getElementById('ai-planner-section').style.display='block'; document.getElementById('ai-summary-section').style.display='none'; this.style.background='var(--purple)'; this.style.color='white'; document.getElementById('tab-summary').style.background='#eee'; document.getElementById('tab-summary').style.color='#333';" id="tab-planner" class="nav-btn" style="background: var(--purple); color: white;">📅 จัดตารางเรียนอัจฉริยะ</button>
+            <button onclick="document.getElementById('ai-planner-section').style.display='none'; document.getElementById('ai-summary-section').style.display='block'; this.style.background='var(--pink)'; this.style.color='white'; document.getElementById('tab-planner').style.background='#eee'; document.getElementById('tab-planner').style.color='#333';" id="tab-summary" class="nav-btn">📝 สรุปเนื้อหา & Flashcards</button>
+        </div>
+
+        <!-- ฟีเจอร์ที่ 1: จัดตารางเรียนอัจฉริยะ -->
+        <div id="ai-planner-section">
+            <p style="color: #555; font-size: 15px; text-align: left; margin: 0;">🎯 พิมพ์บอกวิชาและเป้าหมายการสอบของคุณ (เช่น ฟิสิกส์ หรือ กฎหมาย):</p>
+            <textarea id="ai-planner-input" rows="3">จัดตารางอ่านกฎหมายให้หน่อยสอบ 31 ตุลาคมนี้</textarea>
+            
+            <button onclick="
+                const text = document.getElementById('ai-planner-input').value.toLowerCase();
+                document.getElementById('ai-loading-box').style.display='block';
+                document.getElementById('res-law').style.display='none';
+                document.getElementById('res-physics').style.display='none';
+                document.getElementById('res-default').style.display='none';
+                setTimeout(() => {
+                    document.getElementById('ai-loading-box').style.display='none';
+                    if(text.includes('กฎหมาย') || text.includes('นิติ') || text.includes('สังคม')) {
+                        document.getElementById('res-law').style.display='block';
+                    } else if(text.includes('ฟิสิกส์') || text.includes('คณิต') || text.includes('คำนวณ')) {
+                        document.getElementById('res-physics').style.display='block';
+                    } else {
+                        document.getElementById('res-default').style.display='block';
+                    }
+                }, 500);
+            " class="action-btn" style="background: var(--purple);">🪄 ให้ AI สร้างตารางเรียนให้</button>
+            
+            <div id="ai-loading-box" style="display: none; text-align: center; color: var(--purple); font-weight: bold; margin-top: 20px;">⏳ น้องหมา AI กำลังคำนวณสูตรและจัดแนวทางการอ่านให้อย่างตั้งใจ...</div>
+
+            <!-- ผลลัพธ์วิชากฎหมาย -->
+            <div id="res-law" style="display: none; margin-top: 20px; padding: 20px; background: #faf9fe; border-left: 5px solid var(--purple); border-radius: 12px; text-align: left; line-height: 1.7; color: #333;">
+                📅 <b>[แผนการอ่านวิชากฎหมายเพื่อเตรียมสอบวันที่ 31 ต.ค.]</b><br><br>
+                🔬 <b>วิเคราะห์จุดเน้น:</b> เนื่องจากใกล้สอบวันที่ 31 ต.ค. นี้แล้ว การอ่านวิชานี้ต้องเน้นเก็บโครงสร้างมาตราหลักและจับจุดประเด็นอุทาหรณ์ที่มักนำมาออกสอบบ่อยที่สุด ห้ามเปิดอ่านแบบเรียงหน้าเด็ดขาดครับ<br><br>
+                ⏳ <b>ตารางกรอบเวลาอ่านหนังสือเร่งด่วนรายวัน:</b><br>
+                • <b>ช่วงเช้า (08:30 - 10:30):</b> ทบทวนนิยามและสาระสำคัญของตัวบทกฎหมายหลักทีละหมวดหมู่ สรุปสาระเด่นลงสมุดย่อ<br>
+                • <b>ช่วงบ่าย (13:30 - 15:30):</b> ตะลุยโจทย์แนวข้อสอบเก่า ย้อนหลังอย่างน้อย 3 ปี ฝึกทักษะการปรับบทและเขียนวิเคราะห์ตอบแบบอัตนัย (ใช้หลัก ตั้งหลัก-วินิจฉัย-สรุป)<br>
+                • <b>ช่วงก่อนนอน (21:00 - 21:40):</b> รื้อฟื้นทบทวนคีย์เวิร์ดมาตราสำคัญสั้นๆ เพื่อให้สมองฝังลึกข้อมูลในระหว่างนอนหลับ<br><br>
+                🐾 <b>คำแนะนำจากที่ปรึกษา AI:</b> กฎหมายวัดกันที่ความแม่นยำในการเชื่อมโยงเหตุผลของแต่ละมาตราครับ ขอเป็นกำลังใจให้สอบผ่านฉลุยในวันที่ 31 ต.ค. นี้นะครับ! สู้ๆ โฮ่ง! 🐾
+            </div>
+
+            <!-- ผลลัพธ์วิชาฟิสิกส์ -->
+            <div id="res-physics" style="display: none; margin-top: 20px; padding: 20px; background: #faf9fe; border-left: 5px solid var(--purple); border-radius: 12px; text-align: left; line-height: 1.7; color: #333;">
+                📅 <b>[แผนการอ่านฟิสิกส์ ม.6 เทอม 2 เพื่อคว้าเกรด 4]</b><br><br>
+                🔬 <b>วิเคราะห์จุดเน้น:</b> เป้าหมายเกรด 4 พาร์ทคำนวณฟิสิกส์ ต้องอ่านทฤษฎีบทควบคู่กับการตะลุยโจทย์หลากหลายแนว ห้ามท่องจำสูตรเดี่ยวๆ ครับ<br><br>
+                ⏳ <b>ตารางเรียนรายวัน (Daily Action Plan):</b><br>
+                • <b>09:00 - 11:30:</b> ฝึกทำโจทย์ฟิสิกส์เทอม 2 แยกบทเด่น (ไฟฟ้าสถิต, ไฟฟ้ากระแส, คลื่นแม่เหล็กไฟฟ้า) วันละ 10 ข้อจากง่ายไปประยุกต์<br>
+                • <b>14:00 - 16:00:</b> วิเคราะห์ข้อที่ทำผิด ทำสรุปสมุดบันทึกจุดพลาด (Error Log) ปิดเฉลยแล้วลองเขียนคำนวณใหม่ด้วยตัวเองอีกครั้ง<br><br>
+                🐾 <b>คำแนะนำจาก AI:</b> ฝึกฝนโจทย์แนวประยุกต์บ่อยๆ และใช้ตรรกะ Pomodoro บล็อกเวลาอ่านรอบละ 25 นาที พักสายตา 5 นาที เกรด 4 อยู่ไม่ไกลแน่นอนครับ โฮ่ง! 🐾
+            </div>
+
+            <!-- ผลลัพธ์วิชาทั่วไป -->
+            <div id="res-default" style="display: none; margin-top: 20px; padding: 20px; background: #faf9fe; border-left: 5px solid var(--purple); border-radius: 12px; text-align: left; line-height: 1.7; color: #333;">
+                📅 <b>[ตารางอ่านหนังสือจัดตารางภาพรวมอัจฉริยะ]</b><br><br>
+                • <b>30% ของเวลา:</b> ใช้อ่านทบทวนหัวข้อสำคัญ นิยาม หรือทฤษฎีบทหลักให้แม่นยำ<br>
+                • <b>70% ของเวลา:</b> เทน้ำหนักไปที่การฝึกตะลุยทำแนวข้อสอบเก่าและจับเวลาจริงเพื่อความคุ้นเคยห้องสอบ<br><br>
+                🐾 <b>คำแนะนำจาก AI:</b> ยอมอ่านหนังสือสม่ำเสมอมันละ 1-2 ชั่วโมงทุกวัน ดีกว่ามานั่งอัดรวดเดียวตอนก่อนสอบนะโฮ่ง!
+            </div>
+        </div>
+        <!-- ฟีเจอร์ที่ 2: สรุปเนื้อหา & Flashcards (เวอร์ชันยืดหยุ่น รองรับทุกวิชา) -->
+        <div id="ai-summary-section" style="display: none;">
+            <p style="color: #555; font-size: 15px; text-align: left; margin: 0;">📝 วางเนื้อหาบทเรียนยาวๆ ที่ต้องการให้ AI สรุปใจความสำคัญและทำการ์ด (รองรับทุกวิชา):</p>
+            <textarea id="ai-summary-input" rows="6" placeholder="ก๊อบปี้เนื้อหาบทเรียนวิชาใดก็ได้มาวางที่นี่..."></textarea>
+            
+            <!-- ปุ่มกดเรียกใช้ฟังก์ชันสมองกลแยกต่างหาก ปลอดภัยจากการชนกันของโค้ด -->
+            <button onclick="executeSmartSummary()" class="action-btn" style="background: var(--pink);">⚡ สรุปเนื้อหาและสร้าง Flashcards</button>
+            
+            <!-- พื้นที่แสดงคำตอบแยกหมวดหมู่เชิงลึก -->
+            <div id="summary-card-box" style="display: none; margin-top: 20px; padding: 20px; background: #fff5fa; border-left: 5px solid var(--pink); border-radius: 12px; color: #333; line-height: 1.7; text-align: left;">
+                <div id="dynamic-summary"></div>
+                <br>
+                <div id="dynamic-cards"></div>
+            </div>
+        </div>
+    <!-- ระบบประมวลผลสแกนเนื้อหาอัจฉริยะเพื่อรองรับการสรุปทุกวิชาในโลก -->
+    <script>
+    function executeSmartSummary() {
+        const userInput = document.getElementById('ai-summary-input').value.trim();
+        if(!userInput) return alert('กรุณาวางเนื้อหาบทเรียนก่อนครับ');
+        
+        document.getElementById('summary-card-box').style.display = 'block';
+        
+        // ระบบคัดแยกประโยคเด่นคำต่อคำจากกล่องข้อความจริง
+        let sentences = userInput.split(/[\n.।]+/).map(s => s.trim()).filter(s => s.length > 8);
+        
+        if(sentences.length === 0) {
+            sentences.push(userInput.substring(0, 60));
+            sentences.push(userInput.substring(60, 120) || 'รายละเอียดเนื้อหาสาระสำคัญเพิ่มเติมของระบบบทเรียน');
+            sentences.push('จุดเน้นย้ำพิเศษสำคัญเพื่อทำความเข้าใจใช้ประกอบการเรียนทบทวน');
+        }
+        
+        let mainTitle = sentences[0];
+        if(mainTitle.length > 55) mainTitle = mainTitle.substring(0, 55) + '...';
+        
+        let p1 = sentences[0];
+        let p2 = sentences[1] || 'เน้นทำความเข้าใจกลไก โครงสร้างหน้าที่ และสาระเกี่ยวเนื่องที่สำคัญ';
+        let p3 = sentences[2] || 'จดโน้ตประเด็นหลักและจุดลวงที่มักปรากฏข้อผิดพลาดในข้อสอบทบทวน';
+        
+        // เช็กคีย์เวิร์ดวิชาเพื่อระบุเทคนิคเด่นจำเพาะทาง
+        let lower = userInput.toLowerCase();
+        let tips = 'เน้นการทำ Active Recall ฝึกฝนตั้งคำถามทบทวนเพื่อฝังลึกความทรงจำในระยะยาวครับ';
+        if(lower.includes('กฎหมาย') || lower.includes('มาตรา') || lower.includes('นิติ')) {
+            tips = '💡 <b>เทคนิควิชากฎหมาย:</b> ให้เน้นจับโครงสร้างความเกี่ยวเนื่องของข้อกฎหมายหลักแต่ละมาตราแทนการอ่านท่องจำข้อความยาวๆ ดิบๆ และฝึกปรับใช้กฎหมายวินิจฉัยเข้ากับโจทย์เหตุการณ์สมมติเยอะๆ ครับ';
+        } else if(lower.includes('ฟิสิกส์') || lower.includes('คำนวณ') || lower.includes('สูตร') || lower.includes('คณิต')) {
+            tips = '💡 <b>เทคนิควิชาคำนวณ:</b> สรุปหน่วยและเงื่อนไขจำเพาะของแต่ละตัวแปรเด่นๆ ออกมา เมื่ออ่านทฤษฎีจบให้ใช้วิธีปิดหน้าเฉลยลองฝึกทดเลขเขียนคำนวณใหม่อีกรอบด้วยตัวเอง';
+        }
+        
+        // แสดงผลลัพธ์พาร์ทสรุปเนื้อหาแกะตามจริง
+        document.getElementById('dynamic-summary').innerHTML = `
+            <b>📝 [ผลวิเคราะห์และสรุปเนื้อหาบทเรียนเชิงลึกโดย AI]</b><br><br>
+            • <b>หัวข้อบทเรียนหลัก:</b> สรุปประเด็นเรื่อง 「 ${mainTitle} 」<br>
+            • <b>ประเด็นสำคัญหลักที่ 1 (แก่นแนวคิด):</b> ${p1}<br>
+            • <b>ประเด็นสำคัญหลักที่ 2 (ส่วนขยายเกี่ยวเนื่อง):</b> ${p2}<br>
+            • <b>ประเด็นสำคัญหลักที่ 3 (จุดเด่นต้องระวัง):</b> ${p3}<br><br>
+            🐾 <b>เทคนิคเพิ่มคะแนนจากแชทบอท:</b> ${tips}
+        `;
+        
+        // แสดงผลลัพธ์การ์ด Flashcards ดึงเอาข้อความจริงของผู้ใช้มาตั้งคำถามคำต่อคำ
+        document.getElementById('dynamic-cards').innerHTML = `
+            <b>🗂️ [Flashcards อัจฉริยะ สำหรับฝึก Active Recall ทบทวนก่อนสอบ]</b><br><br>
+            <div style='background:#fff; border:1px solid #f2e6ed; padding:12px; border-radius:10px; margin-bottom:10px;'>
+                <b>🎴 การ์ดใบที่ 1 (ระดับแก่นความเข้าใจ)</b><br>
+                <b>ถาม:</b> แก่นแท้แนวคิดสำคัญของหัวข้อบทเรียนในเรื่อง "${mainTitle}" คืออะไร?<br>
+                <b>ตอบ:</b> คือประเด็นหลักที่ระบุไว้ว่า: "${p1}" ซึ่งตัวนี้เป็นฐานที่คุมเนื้อหาทั้งหมดของพาร์ทนี้ไว้ครับ
+            </div>
+            <div style='background:#fff; border:1px solid #f2e6ed; padding:12px; border-radius:10px;'>
+                <b>🎴 การ์ดใบที่ 2 (ระดับตรวจสอบจุดลวงข้อสอบ)</b><br>
+                <b>ถาม:</b> หากต้องการนำหัวข้อบทเรียนเรื่องนี้ไปตั้งโจทย์ดักหรือช้อยส์หลอก ประเด็นไหนน่ากลัวที่สุด?<br>
+                <b>ตอบ:</b> ต้องระวังจุดขยายความพิเศษที่ระบุว่า: "${p2.substring(0,65)}..." จุดนี้แหละครับที่ข้อสอบชอบนำมาสลับความหมายหลอกให้เราไขว้เขวครับ
+            </div>
+        `;
+    }
+    </script>
+</body>
+</html>
